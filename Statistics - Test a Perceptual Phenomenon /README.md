@@ -1,4 +1,5 @@
-## Synopsis
+## Statistics - Test a Perceptual Phenomenon
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+Analyzed the Stroop effect using descriptive statistics to provide an intuition about the data, and inferential statistics to draw conclusions. (Statistics, Hypothesis Testing, P-values, Measures of central tendency, Measures of variability, Data Visualisation)
 
+Udacity - Data Analyst Nanodegree

@@ -1,0 +1,5 @@
+## Data Analysis with Python - Analyze the Titanic Dataset
+
+Use data analysis techniques to answer questions and draw conclusions about what sorts of people were likely to survive on the Titanic, based on a Kaggle Competition dataset. (Python, NumPy, Pandas, Matplotlib)
+
+Udacity - Data Analyst Nanodegree
