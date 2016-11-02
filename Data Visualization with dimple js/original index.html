@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="utf-8">
+<head> 
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+</head>
+
+
+<body>  
+    <script type="text/javascript">
+     var width = 750,
+        height = 800;
+
+
+      var svg = dimple.newSvg("body", width, height);
+      d3.csv("titanic_data1.csv", function (data) {
+ 
+ // Storyboard //      
+
+        // Create a dimple Story board       
+        var panel = new dimple.chart(svg, data);          
+        // Pick tab colors
+        var defaultColor = panel.defaultColors[11];
+        var panelColor = panel.defaultColors[3];
+        // Pick the frame animation duration in ms 
+        var frame = 3500;
+        var firstTick = true;
+        // Place the panel above the chart 
+        panel.setBounds(120, 120, 300, 25);
+        // Add Passenger Type along the x axis
+        var x = panel.addCategoryAxis("x", "Type");
+        x.addOrderRule(["child","female","male"]);
+        // Use Count for tab length size and hide the axis
+        var y = panel.addPctAxis("y", "Count");
+          y.hidden = true;
+        // Add the bars to the panel
+	    	var s = panel.addSeries(null, dimple.plot.bar);
+        // Add event on Click of the panel tab
+        s.addEventHandler("click", function (e) {
+          // Pause the animation
+          myStoryboard.pauseAnimation(); 
+          // If it is already selected resume the animation
+          // otherwise pause and move to the selected Type
+          if (e.xValue === myStoryboard.getFrameValue()) {
+            myStoryboard.startAnimation();
+          } 
+          else {
+            myStoryboard.goToFrame(e.xValue);
+            myStoryboard.pauseAnimation();
+          }
+        });       
+        // Draw panel chart
+        panel.draw();
+
+// Titles //
+
+        // Remove the title amd lines from the tabs x axis
+        x.titleShape.remove();
+        x.shapes.selectAll("line,path").remove();      
+        // Move the x axis text into the tabs
+        x.shapes.selectAll("text")
+        	.style("text-anchor", "start")
+        	.style("font-size", "18px")
+        	.style("font-weight", "bold")
+        	.attr("transform", "translate(-26, -22)");
+        // Add panels click How-to
+        svg.selectAll("title_text")
+	        .data(["*Click tab to pause/resume."])
+	        .enter()
+	        .append("text")
+	        .attr("x", 192)
+	        .attr("y", 110) 
+	        .style("font-family", "Helvetica")
+	        .style("font-size", "12px")
+	        .style("font-style", "italic")
+	        .text(function (d) { return d; });       
+		    //Add Panel legend title
+	      svg.selectAll("animationTitle")
+	        .data(["Animation Control"])
+	        .enter()
+	        .append("text")
+      	  .attr("x", 195)
+	        .attr("y", 95) 
+	        .style("font-size", "16px")
+	        .style("font-weight", "bold")
+	        .style("color", "Black")
+	        .style("font-family", "helvetica")
+	        .text(function (d) { return d; } );
+        // Manually set the bar colors
+        s.shapes
+        	.attr("rx", 7)
+        	.attr("ry", 7)
+        	.style("fill", function (d) {return (d.x === "1" ? panelColor.fill : defaultColor.fill) })
+        	.style("stroke", function (d) {return (d.x === "1" ? panelColor.stroke : defaultColor.stroke) })
+        	.style("opacity", 0.7);
+        //Add Project Title
+        svg.append("text")
+            .attr("x", 10)
+            .attr("y", 40)
+            .style("font-size", "25px")
+            .style("font-family", "helvetica")
+            .style("font-weight", "bold")
+            .text("Data Visualisation on Titanic Passengers using Dimple.js")
+        //Add Plot Title
+        svg.append("text")
+            .attr("x", 130)
+            .attr("y", 210)
+            .style("font-size", "17px")
+            .style("font-family", "helvetica")
+            .style("font-weight", "bold")
+            .text("Survival rates of Titanic Passengers")             
+
+// Main Chart //
+
+        // Draw the main chart
+        var myChart = new dimple.chart(svg, data);
+        myChart.setBounds(100, 250, 450, 500);
+        var x = myChart.addCategoryAxis("x", "Class");
+        var y = myChart.addMeasureAxis("y","Survival Rate");
+        var b = myChart.addSeries(['Type'], dimple.plot.bar);
+        x.fontSize = "15px";
+        x.fontFamily = "helvetica";       
+        y.overrideMax = 100;
+        y.showGridlines = false;
+        x.title = "Passenger Class";
+        y.title = "Suvival Rate (%)";
+        y.fontSize = "15px";
+        y.fontFamily = "helvetica";       
+
+// Chart + Storyboard //
+
+	      // Add Storyboard to the chart and set tick event
+        var story = myChart.setStoryboard("Type", function onTick(e) {   
+          if (!firstTick) {
+            s.shapes
+              .transition()
+              .duration(frame / 2)
+              .style("fill", function (d) { 
+                return (d.x === e ? panelColor.fill : defaultColor.fill) 
+              })
+              .style("stroke", function (d) { 
+                return (d.x === e ? panelColor.stroke : defaultColor.stroke) 
+              });
+          }
+          firstTick = false;
+        });
+       myChart.draw();          
+      });
+
+    </script>
+</body>
+</html>
