@@ -1,0 +1,9 @@
+References
+
+[1]https://www.math.upenn.edu/~yuecheng/images/zscoretable.pdf
+[2]http://www.had2know.com/academics/normal-distribution-table-z-scores.html
+[3]http://www.evanmiller.org/ab-testing/sample-size.html
+[4]http://graphpad.com/quickcalcs/binomial1.cfm
+[5]https://discussions.udacity.com/
+[6]http://onlinelibrary.wiley.com/doi/10.1111/opo.12131/full
+[7]https://goo.gl/EEuMFB
